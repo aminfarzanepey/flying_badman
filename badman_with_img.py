@@ -120,4 +120,11 @@ while runing:
     #draw all sprites
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
+
+    #check if any enemies collided with player
+    if pygame.sprite.spritecollideany(player, enemies):
+        #if so then remove the player and stop the loop
+        runing = False
+
+
     pygame.display.flip()
