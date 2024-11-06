@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         self.surf = pygame.image.load("badman.png").convert()
-        self.surf.set_colorkey((255,255,255), RLEACCEL)
+        self.surf.set_colorkey((0,0,0), RLEACCEL)
         self.rect = self.surf.get_rect()
 
     def update(self, pressed_keys):
@@ -52,7 +52,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load("enemy.png").convert()
-        self.surf.set_colorkey((255,255,255), RLEACCEL)
+        self.surf.set_colorkey((0,0,0), RLEACCEL)
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
@@ -68,23 +68,45 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
+#define cloud object
+class Cloud(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.surf = pygame.image.load("cloud.png").convert()
+        self.surf.set_colorkey((0,0,0), RLEACCEL)
 
+        #the starting position is randomly generated
+        self.rect = self.surf.get_rect(
+            center = (
+                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
+                random.randint(0,SCREEN_HEIGHT)
+            )
+        )
+
+    def update(self):
+        self.rect.move_ip(-5, 0)
+        if self.rect.right < 0:
+            self.kill()
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-#creates custom event for adding a new enemy
+#creates custom event for adding a new enemy and cloud
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY,250)
 
+ADDCLOUD = pygame.USEREVENT + 2
+pygame.time.set_timer(ADDCLOUD, 1000)
 #creates player
 player = Player()
 
 
 #creat groups to hold enemy sprites and all sprites
 #- enemies is used for collision detection and position update
+#clouds is used for position update
 #- all_sprites is used for rendering
 enemies = pygame.sprite.Group()
+clouds = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
@@ -108,14 +130,22 @@ while runing:
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
 
+        #add new cloud?
+        elif event.type == ADDCLOUD:
+            new_cloud = Cloud()
+            clouds.add(new_cloud)
+            all_sprites.add(new_cloud)
+
 
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
 
-    #enemy update
+    #enemy and cloud update
     enemies.update()
+    clouds.update()
 
-    screen.fill((0,0,0))
+    #fill the screen with light gray
+    screen.fill((94,94,94))
 
     #draw all sprites
     for entity in all_sprites:
