@@ -124,6 +124,7 @@ while runing:
     #check if any enemies collided with player
     if pygame.sprite.spritecollideany(player, enemies):
         #if so then remove the player and stop the loop
+        player.kill()
         runing = False
 
 
