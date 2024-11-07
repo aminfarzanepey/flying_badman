@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         self.surf = pygame.image.load("badman.png").convert()
-        self.surf.set_colorkey((0,0,0), RLEACCEL)
+        self.surf.set_colorkey((255,255,255), RLEACCEL)
         self.rect = self.surf.get_rect()
 
     def update(self, pressed_keys):
@@ -52,7 +52,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load("enemy.png").convert()
-        self.surf.set_colorkey((0,0,0), RLEACCEL)
+        self.surf.set_colorkey((255,255,255), RLEACCEL)
         self.rect = self.surf.get_rect(
             center = (
                 random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
@@ -87,6 +87,11 @@ class Cloud(pygame.sprite.Sprite):
         self.rect.move_ip(-5, 0)
         if self.rect.right < 0:
             self.kill()
+
+#setup for sounds
+pygame.mixer.init()
+
+#intialize pygame
 pygame.init()
 
 #setup the clock for a decent framerate
@@ -97,7 +102,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 #creates custom event for adding a new enemy and cloud
 ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY,250)
+pygame.time.set_timer(ADDENEMY,500)
 
 ADDCLOUD = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDCLOUD, 1000)
@@ -113,6 +118,10 @@ enemies = pygame.sprite.Group()
 clouds = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+
+#load and play background theme song
+pygame.mixer.music.load("theme_song.ogg")
+pygame.mixer.music.play(loops=-1)
 
 #variable to keep main loop runing
 runing = True
@@ -166,3 +175,7 @@ while runing:
 
     #ensure we maintain a 30 frames per second rate
     clock.tick(30)
+
+#we are done and should stop mixer
+pygame.mixer.music.stop()
+pygame.mixer.quit()
