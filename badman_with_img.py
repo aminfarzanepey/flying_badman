@@ -89,6 +89,10 @@ class Cloud(pygame.sprite.Sprite):
             self.kill()
 pygame.init()
 
+#setup the clock for a decent framerate
+clock = pygame.time.Clock()
+
+#creat screen object
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 #creates custom event for adding a new enemy and cloud
@@ -157,5 +161,8 @@ while runing:
         player.kill()
         runing = False
 
-
+    #flip everything to display
     pygame.display.flip()
+
+    #ensure we maintain a 30 frames per second rate
+    clock.tick(30)
