@@ -1,9 +1,9 @@
 # flying_badman
 in this game batman can fly tooo!!!!
 
-## Live Demo
+## Screen Shots
 
-<img src="https://github.com/Mohammadshekari/Birthday-Cake-With-Blowing-Candle/blob/main/screenshots/cake-on.jpg?raw=true" width="600">
+<img src="https://github.com/aminfarzanepey/flying_badman/blob/main/screenshots/screenshot.jpg?raw=true" width="600">
 
 ## Installation
 
